@@ -233,7 +233,7 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(10),
                             elevation: 5,
                             child: Image.asset(
-                                "assets/logo.png",
+                                "assets/Facebook.jpg",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
@@ -247,11 +247,10 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(10),
                             elevation: 5,
                             child: Image.asset(
-                                "assets/logo.png",
+                                "assets/x.jpg",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
-                              color: Colors.blue,
                             ),
                           ),
                         )
@@ -504,7 +503,7 @@ class _SignUpState extends State<SignUp> {
                             elevation: 5,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                              "assets/logo.png",
+                              "assets/google.png",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
@@ -518,7 +517,7 @@ class _SignUpState extends State<SignUp> {
                             borderRadius: BorderRadius.circular(10),
                             elevation: 5,
                             child: Image.asset(
-                              "assets/logo.png",
+                              "assets/Facebook.jpg",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
@@ -532,11 +531,10 @@ class _SignUpState extends State<SignUp> {
                             borderRadius: BorderRadius.circular(10),
                             elevation: 5,
                             child: Image.asset(
-                              "assets/logo.png",
+                              "assets/x.jpg",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
-                              color: Colors.blue,
                             ),
                           ),
                         )
