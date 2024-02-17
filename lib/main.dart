@@ -219,7 +219,7 @@ class _LoginState extends State<Login> {
                             elevation: 5,
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                              "assets/logo.png",
+                              "assets/google.png",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
