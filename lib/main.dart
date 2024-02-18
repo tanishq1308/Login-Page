@@ -1,6 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:login_page/controllers/user_controller.dart';
+import 'package:login_page/firebase_options.dart';
+import 'package:login_page/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -9,10 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login Page',
-      home: MyStatefulWidget(),
+      home: UserController.user != null ? const HomePage() : const MyStatefulWidget(),
     );
   }
 }
@@ -214,49 +221,97 @@ class _LoginState extends State<Login> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Material(
-                            color: Colors.white,
-                            elevation: 5,
-                            borderRadius: BorderRadius.circular(10),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              try {
+                                final user = await UserController.loginWithGoogle();
+                                if (user != null && mounted) {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomePage()
+                                    )
+                                  );
+                                }
+                              }
+
+                              on FirebaseAuthException catch (error) {
+                                print(error.message);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          error.message ?? "Something went wrong"
+                                      )
+                                  )
+                                );
+                              }
+
+                              catch (error) {
+                                print(error);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            error.toString()
+                                        )
+                                    )
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              )
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Image.asset(
-                                "assets/google.png",
-                                height: 40,
-                                width: 80,
-                                fit: BoxFit.contain,
+                                 "assets/google.png",
+                                 height: 40,
+                                 width: 50,
+                                 fit: BoxFit.contain,
                               ),
                             ),
-                          ),
+                          )
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Material(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            elevation: 5,
-                            child: Image.asset(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                  )
+                              ),
+                              child: Image.asset(
                                 "assets/Facebook.png",
-                              height: 50,
-                              width: 90,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
+                                height: 50,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            )
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Material(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            elevation: 5,
-                            child: Image.asset(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                  )
+                              ),
+                              child: Image.asset(
                                 "assets/x.jpg",
-                              height: 50,
-                              width: 90,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        )
+                                height: 50,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                        ),
                       ],
                     ),
                   )
@@ -280,7 +335,8 @@ class _LoginState extends State<Login> {
                     "Sign up",
                     style: TextStyle(
                       color: Color.fromARGB(255, 34, 48, 160),
-                      fontWeight: FontWeight.w600
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 )
@@ -309,13 +365,18 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.arrow_back_sharp,
-            color: Colors.black,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_sharp,
+              color: Color.fromARGB(255, 34, 48, 160),
+            ),
           ),
         ),
       ),
@@ -512,50 +573,65 @@ class _SignUpState extends State<SignUp> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Material(
-                            color: Colors.white,
-                            elevation: 5,
-                            borderRadius: BorderRadius.circular(10),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Image.asset(
-                                "assets/google.png",
-                                height: 40,
-                                width: 80,
-                                fit: BoxFit.contain,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                  )
                               ),
-                            ),
-                          ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Image.asset(
+                                  "assets/google.png",
+                                  height: 40,
+                                  width: 50,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            )
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Material(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            elevation: 5,
-                            child: Image.asset(
-                              "assets/Facebook.png",
-                              height: 50,
-                              width: 90,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                  )
+                              ),
+                              child: Image.asset(
+                                "assets/Facebook.png",
+                                height: 50,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            )
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Material(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            elevation: 5,
-                            child: Image.asset(
-                              "assets/x.jpg",
-                              height: 50,
-                              width: 90,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        )
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                  )
+                              ),
+                              child: Image.asset(
+                                "assets/x.jpg",
+                                height: 50,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                        ),
                       ],
                     ),
                   )
