@@ -218,11 +218,14 @@ class _LoginState extends State<Login> {
                             color: Colors.white,
                             elevation: 5,
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              "assets/google.png",
-                              height: 50,
-                              width: 90,
-                              fit: BoxFit.contain,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Image.asset(
+                                "assets/google.png",
+                                height: 40,
+                                width: 80,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
@@ -233,7 +236,7 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(10),
                             elevation: 5,
                             child: Image.asset(
-                                "assets/Facebook.jpg",
+                                "assets/Facebook.png",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
@@ -305,6 +308,18 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      extendBodyBehindAppBar: true,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -502,11 +517,14 @@ class _SignUpState extends State<SignUp> {
                             color: Colors.white,
                             elevation: 5,
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              "assets/google.png",
-                              height: 50,
-                              width: 90,
-                              fit: BoxFit.contain,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Image.asset(
+                                "assets/google.png",
+                                height: 40,
+                                width: 80,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
@@ -517,7 +535,7 @@ class _SignUpState extends State<SignUp> {
                             borderRadius: BorderRadius.circular(10),
                             elevation: 5,
                             child: Image.asset(
-                              "assets/Facebook.jpg",
+                              "assets/Facebook.png",
                               height: 50,
                               width: 90,
                               fit: BoxFit.contain,
