@@ -225,6 +225,7 @@ class _LoginState extends State<Login> {
                             onPressed: () async {
                               try {
                                 final user = await UserController.loginWithGoogle();
+                                UserController.user = user;
                                 if (user != null && mounted) {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
@@ -235,7 +236,6 @@ class _LoginState extends State<Login> {
                               }
 
                               on FirebaseAuthException catch (error) {
-                                print(error.message);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       content: Text(
@@ -246,7 +246,6 @@ class _LoginState extends State<Login> {
                               }
 
                               catch (error) {
-                                print(error);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text(

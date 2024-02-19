@@ -19,8 +19,6 @@ class UserController {
       credential,
     );
 
-    user = UserController.user;
-
     return userCredential.user;
   }
 
