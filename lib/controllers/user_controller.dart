@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserController {
@@ -25,5 +26,25 @@ class UserController {
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
+  }
+
+  static Future<User?> loginWithFacebook() async {
+    final googleAccount = await FacebookAuth.instance.login();
+    final googleAuth = googleAccount.accessToken?.token;
+
+    final credential = FacebookAuthProvider.credential(
+        googleAuth ?? ""
+    );
+
+    final userCredential = await FirebaseAuth.instance.signInWithCredential(
+      credential,
+    );
+
+    return userCredential.user;
+  }
+
+  static Future<void> facebookSignOut() async {
+    await FirebaseAuth.instance.signOut();
+    await FacebookAuth.instance.logOut();
   }
 }

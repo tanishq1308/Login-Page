@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:login_page/controllers/user_controller.dart';
 import 'package:login_page/firebase_options.dart';
 import 'package:login_page/home.dart';
@@ -276,7 +277,39 @@ class _LoginState extends State<Login> {
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                  final user = await UserController.loginWithFacebook();
+                                  UserController.user = user;
+                                  if (user != null && mounted) {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) => const HomePage()
+                                        )
+                                    );
+                                  }
+                                }
+
+                                on FirebaseAuthException catch (error) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              error.message ?? "Something went wrong"
+                                          )
+                                      )
+                                  );
+                                }
+
+                                catch (error) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              error.toString()
+                                          )
+                                      )
+                                  );
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
                                   elevation: 5,
