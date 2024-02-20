@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:login_page/controllers/user_controller.dart';
 import 'package:login_page/firebase_options.dart';
 import 'package:login_page/home.dart';
@@ -240,8 +239,9 @@ class _LoginState extends State<Login> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       content: Text(
-                                          error.message ?? "Something went wrong"
-                                      )
+                                          error.code
+                                      ),
+                                    duration: const Duration(seconds: 5),
                                   )
                                 );
                               }
@@ -251,7 +251,8 @@ class _LoginState extends State<Login> {
                                     SnackBar(
                                         content: Text(
                                             error.toString()
-                                        )
+                                        ),
+                                      duration: const Duration(seconds: 5),
                                     )
                                 );
                               }
@@ -294,8 +295,9 @@ class _LoginState extends State<Login> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
-                                              error.message ?? "Something went wrong"
-                                          )
+                                              error.code
+                                          ),
+                                        duration: const Duration(seconds: 5),
                                       )
                                   );
                                 }
@@ -305,7 +307,8 @@ class _LoginState extends State<Login> {
                                       SnackBar(
                                           content: Text(
                                               error.toString()
-                                          )
+                                          ),
+                                        duration: const Duration(seconds: 5),
                                       )
                                   );
                                 }
